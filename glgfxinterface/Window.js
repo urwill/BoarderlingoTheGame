@@ -7,13 +7,13 @@ class Window {
 	_canvas;
 	
 	constructor() {
-		window.alert('Window');
+		//window.alert('Window');
 		this._canvas = document.createElement('canvas');
 		document.body.appendChild(this._canvas);
 	}
 	
  	static getInstance() {
-		window.alert('Window.getInstance()');
+		//window.alert('Window.getInstance()');
 		if(this._window === undefined) {
 			this._window = new Window();
 		}
@@ -21,7 +21,7 @@ class Window {
 	}
 	
 	createWindow(title, width, height) {
-		window.alert('Window.createWindow()');
+		//window.alert('Window.createWindow()');
 		this._windowID = title;
 		this._width = width;
 		this._height = height;

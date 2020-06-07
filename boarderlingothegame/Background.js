@@ -8,26 +8,45 @@ class Background {
 	_currentTiles = [];
 	
 	constructor() {
-		window.alert('Background');
+		//window.alert('Background');
+
+		// while(!this._tilesLoaded) {
+		// 	//warten bis alle Bilder geladen sind
+		// }
 		
-		while(!this._tilesLoaded) {
-			//warten bis alle Bilder geladen sind
-		}
-		
-		Window.scale = windowHeight / this._background.getHeight();
-		this._background.setSize();
-		this._feld.setSize();
+		this._tilesLoaded();	//warten bis alle Bilder geladen sind
 	}
+
+	// _tilesLoaded() {
+	// 	if(!this._background.isLoaded()) {
+	// 		return false;
+	// 	}
+	// 	if(!this._feld.isLoaded()) {
+	// 		return false;
+	// 	}
+		
+	// 	return true;
+	// }
 	
 	_tilesLoaded() {
+		var loaded = true;
 		if(!this._background.isLoaded()) {
-			return false;
+			loaded = false;
 		}
 		if(!this._feld.isLoaded()) {
-			return false;
+			loaded = false;
 		}
 		
-		return true;
+		if(loaded) {
+			//Window.scale = windowHeight / this._background.getHeight();
+			this._background.setSize();
+			this._feld.setSize();
+		} else {
+			var backgroundInstance = this;
+			window.setTimeout(function () {
+				backgroundInstance._tilesLoaded();
+			}, 100);
+		}
 	}
 	
 	getCurrentTiles() {

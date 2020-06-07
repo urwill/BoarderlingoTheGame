@@ -9,7 +9,7 @@ class HighScore {
 	static _image;
 	
 	constructor() {
-		window.alert('HighScore');
+		//window.alert('HighScore');
 		
 		this._image = new Tile('boarderlingothegame/gfx/TexturFuerHighscore.png');
 		

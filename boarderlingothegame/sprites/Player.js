@@ -1,11 +1,11 @@
 class Player {
-	_x = 10;
-	_y = 20;
+	_x = 10 * scale;
+	_y = 20 * scale;
 	_horizontalMomentum;
 	
 	_state = PlayerStateEnum.IDLE;
-	_speedRight = 8 * Window.scale;
-	_SPRUNGKRAFT = 20;
+	_speedRight = 8 * scale;
+	_SPRUNGKRAFT = 20 * scale;
 	
 	_idleRight1 = new Tile('boarderlingothegame/gfx/blingo_right.png');
 	_idleRight2 = new Tile('boarderlingothegame/gfx/blingo_right2.png');
@@ -15,7 +15,7 @@ class Player {
 	_jumping = new Tile('boarderlingothegame/gfx/blingo_jump.png');
 	
 	constructor() {
-		window.alert('Player');
+		//window.alert('Player');
 		
 		while(!this._tilesLoaded) {
 			//warten bis alle Bilder geladen sind
@@ -47,6 +47,62 @@ class Player {
 	
 	isInAir() {
 		return (this.getState() === PlayerStateEnum.JUMPING || this.getState() === PlayerStateEnum.FALLING);
+	}
+
+	getHitBox() {	
+		var retPol = new Polygon();
+		var x = this.getX();
+		var y = this.getY();
+		
+		var offSet = 29 * 2 * scale;	//leeren Platz oben im Bild ausgleichen
+		
+		if(!this.isInAir()) {
+			if(this.getState() === PlayerStateEnum.DUCKING)
+			{//TODO nochmal ordentlich
+				offSet = 135 * 2 * scale;
+				retPol.addPoint(x + (34 * scale), y + (135 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (135 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (600 * scale) - offSet);
+				retPol.addPoint(x + (34 * scale), y + (600 * scale) - offSet);
+			}
+			else {
+				retPol.addPoint(x + (220 * scale), y + (30 * scale) - offSet);
+				retPol.addPoint(x + (280 * scale), y + (30 * scale) - offSet);
+				retPol.addPoint(x + (280 * scale), y + (135 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (150 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (280 * scale) - offSet);
+				retPol.addPoint(x + (275 * scale), y + (500 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (530 * scale) - offSet);
+				retPol.addPoint(x + (350 * scale), y + (600 * scale) - offSet);
+				retPol.addPoint(x + (34 * scale), y + (600 * scale) - offSet);
+				retPol.addPoint(x + (34 * scale), y + (135 * scale) - offSet);
+				retPol.addPoint(x + (165 * scale), y + (135 * scale) - offSet);
+				retPol.addPoint(x + (165 * scale), y + (80 * scale) - offSet);
+			}
+		}
+		else {
+			retPol.addPoint(x + (220 * scale), y + (30 * scale) - offSet);
+			retPol.addPoint(x + (280 * scale), y + (30 * scale) - offSet);
+			retPol.addPoint(x + (280 * scale), y + (135 * scale) - offSet);
+			retPol.addPoint(x + (350 * scale), y + (150 * scale) - offSet);	//Rechter ellenbogen
+			retPol.addPoint(x + (350 * scale), y + (260 * scale) - offSet);
+			retPol.addPoint(x + (337 * scale), y + (480 * scale) - offSet);	//Vorderrad
+			retPol.addPoint(x + (305 * scale), y + (495 * scale) - offSet);
+			retPol.addPoint(x + (250 * scale), y + (455 * scale) - offSet);
+			retPol.addPoint(x + (105 * scale), y + (505 * scale) - offSet);
+			retPol.addPoint(x + (110 * scale), y + (550 * scale) - offSet);
+			retPol.addPoint(x + (78 * scale), y + (570 * scale) - offSet);
+			retPol.addPoint(x + (60 * scale), y + (560 * scale) - offSet);
+			retPol.addPoint(x + (50 * scale), y + (520 * scale) - offSet);
+			retPol.addPoint(x + (10 * scale), y + (530 * scale) - offSet);
+			retPol.addPoint(x + (0 * scale), y + (520 * scale) - offSet);		//Linke Fußspitze
+			retPol.addPoint(x + (0 * scale), y + (360 * scale) - offSet);
+			retPol.addPoint(x + (55 * scale), y + (135 * scale) - offSet);
+			retPol.addPoint(x + (170 * scale), y + (135 * scale) - offSet);
+			retPol.addPoint(x + (170 * scale), y + (70 * scale) - offSet);
+		}
+		retPol.setOffset(this._idleRight1.getHeight());
+		return retPol;
 	}
 	
 	getTile(counterVariable) {
@@ -133,13 +189,25 @@ class Player {
 	applyHorizontalMomentum(momentum) {
 		this._horizontalMomentum += momentum;
 	}
+
+	jump() {
+		if (this.getState() === PlayerStateEnum.JUMPING) {
+		
+			this._setState(PlayerStateEnum.FALLING);
+			this.setHorizontalMomentum(-(this._SPRUNGKRAFT / 2));
+		}
+		if(this.getState() === PlayerStateEnum.IDLE) {
+			this._setState(PlayerStateEnum.JUMPING);
+			this.setHorizontalMomentum(-this._SPRUNGKRAFT);
+		}
+	}
 	
 	calcJumpFrame() {
-		var bodenhoehe = 0;
-		this.setY(this.getY() + this.getHorizontalMomentum());
-		this.decreaseHorizontalMomentum(-0.55);
+		var bodenhoehe = 20;
+		this.setY(this.getY() - this.getHorizontalMomentum());
+		this.decreaseHorizontalMomentum(-0.55 * scale);
 		
-		if(this.getY() > bodenhoehe) {
+		if(this.getY() < 0) {
 			this.setY(bodenhoehe);
 			this.setHorizontalMomentum(0);
 			this._setState(PlayerStateEnum.IDLE);			

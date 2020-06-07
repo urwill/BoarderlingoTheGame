@@ -29,8 +29,8 @@ class Tile {
 	}
 	
 	setSize() {
-		this._width = this.img.width * Window.scale;
-		this._height = this.img.height * Window.scale;
+		this._width = this.img.width * scale;
+		this._height = this.img.height * scale;
 	}
 	
 	getHeight() {
