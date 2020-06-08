@@ -53,17 +53,6 @@ class TileRenderer {
 		}
 		this._context.closePath();
 		this._context.fill();
-		this.getPolygonPoints(coordinates);
-	}
-
-	getPolygonPoints(coordinates) {
-		var points = [];
-
-		this._context.fillStyle = "rgba(255, 0, 0, 1)";
-		for(var i = 0; i < coordinates.length; i ++)
-		{
-			this._context.fillRect(coordinates[i].x, coordinates[i].y, 10, 10);
-		}
 	}
 
 	renderPolygonPoints(points) {

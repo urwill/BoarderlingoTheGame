@@ -7,6 +7,10 @@ class InputController {
 	_keyVTippedFired = false;
 	_keyBTipped = false;
 	_keyBTippedFired = false;
+	_keyNTipped = false;
+	_keyNTippedFired = false;
+	_keyMTipped = false;
+	_keyMTippedFired = false;
 	
 	constructor() {
 		//window.alert('InputController');
@@ -33,6 +37,12 @@ class InputController {
 			case 66:
 				this._keyBTipped = true;
 				break;
+			case 77:
+				this._keyMTipped = true;
+				break;
+			case 78:
+				this._keyNTipped = true;
+				break;
 			case 86:
 				this._keyVTipped = true;
 				break;
@@ -55,34 +65,25 @@ class InputController {
 				this._keyBTippedFired = false;
 				this._keyBTipped = false;
 				break;
+			case 77:
+				this._keyMTippedFired = false;
+				this._keyMTipped = false;
+				break;
+			case 78:
+				this._keyNTippedFired = false;
+				this._keyNTipped = false;
+				break;
 			case 86:
 				this._keyVTippedFired = false;
 				this._keyVTipped = false;
 				break;
 		}
 	}
-	
-	/* spaceTipped() {
-		var retval = false;
-		if(space == 0 && glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_SPACE) == 1)
-			retval = true;
-		space = glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_SPACE);
-		return retval;
+
+	reset() {
+		this._leftPressed = false;
+		this._downPressed = false;
 	}
-	public boolean keyVTipped() {
-		boolean retval=false;
-		if(keyV == 0 && glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_V) == 1)
-			retval = true;
-		keyV = glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_V);
-		return retval;
-	}
-	public boolean keyBTipped() {
-		boolean retval=false;
-		if(keyV == 0 && glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_B) == 1)
-			retval = true;
-		keyV = glfwGetKey(Window.getInstance().getWinId(),GLFW_KEY_B);
-		return retval;
-	} */
 	
 	downPressed() {
 		return this._downPressed;
@@ -119,6 +120,28 @@ class InputController {
 
 		if(!this._keyBTippedFired && this._keyBTipped) {
 			this._keyBTippedFired = true;
+			retval = true;
+		}
+
+		return retval;
+	}
+
+	keyNTipped() {
+		var retval = false;
+
+		if(!this._keyNTippedFired && this._keyNTipped) {
+			this._keyNTippedFired = true;
+			retval = true;
+		}
+
+		return retval;
+	}
+
+	keyMTipped() {
+		var retval = false;
+
+		if(!this._keyMTippedFired && this._keyMTipped) {
+			this._keyMTippedFired = true;
 			retval = true;
 		}
 

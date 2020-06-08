@@ -222,13 +222,18 @@ class Player {
 	}
 	
 	brake() {
-		if(!this.isInAir())
+		if(!this.isInAir()) {
 			this._setState(PlayerStateEnum.BRAKING);
+		}
 	}
 
 	resetState() {
-		if(!this.isInAir())
+		if(!this.isInAir()) {
 			this._setState(PlayerStateEnum.IDLE);
-		
+		}		
+	}
+
+	shoot() {
+		// TODO
 	}
 }

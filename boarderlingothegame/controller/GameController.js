@@ -4,10 +4,15 @@ class GameController {
 	_player = new Player();
 	_renderer;
 	_obstacles = [];
+	_audioPlayer = new AudioPlayer();
 	_highScore = new HighScore();
 	_overlay = null;
 	_framesTillStart = 0;
 	_context;
+	_cactusTile = new Tile("boarderlingothegame/gfx/cactus.png");
+	_heliTile = new Tile("boarderlingothegame/gfx/Heli.png");
+	_oma1Tile = new Tile("boarderlingothegame/gfx/Oma1.png");
+	_oma2Tile = new Tile("boarderlingothegame/gfx/Oma2.png");
 	
 	constructor(canvas) {
 		//window.alert('GameController');
@@ -58,8 +63,9 @@ class GameController {
 	}
 
 	_killPlayer(index) {
+		this._audioPlayer.playDamageAudio();
 		window.alert('Gelähmt gar quer.');
-		//audioPlayer.playAudio("src\\boarderlingothegame\\Sounds\\boarderlingoDamage.wav");
+		this._controller.reset();	//wurde ducken oder bremsen losgelassen, während der Alert da war, wurde nicht registriert, dass man nicht mehr drückt
 		this._highScore.reset();
 		for(index; index < this._getObstacles().length; index++) {
 			this._getObstacles()[index].moveRight(-400 * scale);
@@ -157,7 +163,7 @@ class GameController {
 	}
 	
 	processInput() {
-		this._player.resetState();//Damit er aus einem Ducking - State von alleine rauskommt
+		this._player.resetState();	//Damit er aus einem Ducking - State von alleine rauskommt
 
 		if(this._controller.downPressed())
 		{
@@ -171,7 +177,7 @@ class GameController {
 		
 		if(this._controller.spaceTipped())
 			if(this._player.getState() === PlayerStateEnum.DUCKING) {
-				//this._player.shoot();
+				this._player.shoot();
 			}
 			else {
 			this._player.jump();
@@ -182,7 +188,15 @@ class GameController {
 		}
 
 		if(this._controller.keyBTipped()) {
-			this.addObstacle(new Cactus('urwill'));
+			this.addObstacle(new Cactus(this._cactusTile, 'urwill'));
+		}
+
+		if(this._controller.keyNTipped()) {
+			this.addObstacle(new Heli(this._heliTile, 'urwill'));
+		}
+
+		if(this._controller.keyMTipped()) {
+			this.addObstacle(new Granny(this._oma1Tile, this._oma2Tile, 'urwill'));
 		}
 	}
 

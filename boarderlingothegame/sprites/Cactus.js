@@ -1,28 +1,14 @@
 class Cactus extends Obstacle {
-	_image = new Tile("boarderlingothegame/gfx/cactus.png");
+	//_image = new Tile("boarderlingothegame/gfx/cactus.png");	//Tile in GameController laden, damit das Bild nur 1 mal geladen werden muss
+	_image;
 	
-	constructor(spawnedBy) {
+	constructor(cactusTile, spawnedBy) {
 		super(spawnedBy);
+		this._image = cactusTile;
 		this._location = new Object({ x: windowWidth + 300, y: 20 * scale });
-	}
-	
-	getLocation() {
-		return this._location;
 	}
 
 	getHitBox() {
-		// var retPol = [];
-		// retPol.push([this.getLocation().x, this.getLocation().y]);
-		// retPol.push([this.getLocation().x + this._image.getWidth() - (10 * scale), this.getLocation().y]);
-		// retPol.push([this.getLocation().x + this._image.getWidth(), this.getLocation().y + (10 * scale)]);
-		// retPol.push([this.getLocation().x + this._image.getWidth(), this.getLocation().y + this._image.getHeight()]);
-		// retPol.push([this.getLocation().x, this.getLocation().y + this._image.getHeight()]);
-
-		// var offSet = windowHeight - this._image.getHeight() - (retPol[0][1] * 2);
-		// for(var index = 0; index < retPol.length; index++) {
-		// 	retPol[index][1] += offSet;
-		// }
-
 		var retPol = new Polygon();
 		retPol.addPoint(this.getLocation().x, this.getLocation().y);
 		retPol.addPoint(this.getLocation().x + this._image.getWidth() - (10 * scale), this.getLocation().y);

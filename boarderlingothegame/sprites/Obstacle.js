@@ -10,4 +10,7 @@ class Obstacle {
 		return this._spawnedBy;
 	}
 	
+	getLocation() {
+		return this._location;
+	}
 }
